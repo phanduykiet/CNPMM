@@ -16,13 +16,15 @@ const LoginPage = () => {
                 message: "LOGIN USER",
                 description: "Success"
             });
-            setAuth({
+            const newAuth = {
                 isAuthenticated: true,
                 user: {
                     name: res?.user?.name ?? "",
                     email: res?.user?.email ?? "",
                 }
-            })
+            };
+            console.log(">>> sẽ set auth = ", newAuth); // check trước khi set
+            setAuth(newAuth);
             navigate("/");
         } else {
             notification.error({ 

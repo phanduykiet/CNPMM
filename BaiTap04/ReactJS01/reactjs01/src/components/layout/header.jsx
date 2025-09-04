@@ -19,13 +19,13 @@ const Header = () => {
             icon: <UsergroupAddOutlined />,
         }]: []),
         {
-            label: 'Welcome ${auth?.user?.email ?? "")',
+            label: `Welcome ${auth?.user?.email ?? ""}`,
             key: 'SubMenu',
             icon: <SettingOutlined />,
             children: [
                 ...(auth.isAuthenticated? [{
                     label: <span onClick={() => {
-                        localStorage.clear("access_token");
+                        localStorage.removeItem("access_token");
                         setCurrent("home");
                         setAuth({
                             isAuthenticated: false,
