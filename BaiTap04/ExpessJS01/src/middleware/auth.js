@@ -17,8 +17,6 @@ const auth = (req, res, next) => {
           name: decoded.name,
           createdby: "phanduykiet"
         }
-
-        console.log(">>> check token: ", decoded);
         next();
       } catch (error) {
         return res.status(401).json({
