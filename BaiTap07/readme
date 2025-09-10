@@ -1,0 +1,2 @@
+Sinh viên thực hiện yêu cầu và Up code lên GitHub và up thử thư viện lên https://www.npmjs.com/ 
+1. Tạo 01 project để thực hiện xây dựng 01 thư viện cho chức năng Giỏ hàng (UI, thêm, sửa, xóa) với việc chuẩn hóa các component (input text, button, modals, cards) cho Giỏ hàng. Đóng gói thành thư viện để dùng cho dự án khác.
