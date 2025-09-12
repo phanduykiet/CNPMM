@@ -8,7 +8,7 @@ const HomePage = () => {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(5);
+  const [pageSize] = useState(8); // mỗi trang 6 item
   const [total, setTotal] = useState(0);
 
   const [subject, setSubject] = useState();
@@ -44,19 +44,31 @@ const HomePage = () => {
     <div
       style={{
         minHeight: "100vh",
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
+        padding: 24,
+        background: "#f5f5f5",
       }}
     >
       <Card
-        title="Danh sách bài học"
-        style={{ textAlign: "center", width: 700 }}
+        title="📚 Danh sách bài học"
+        style={{
+          width: "100%",
+          maxWidth: 1000,
+          borderRadius: 12,
+        }}
       >
         {/* Bộ lọc chọn subject và category */}
-        <div style={{ display: "flex", gap: 16, marginBottom: 20, justifyContent: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 16,
+            marginBottom: 20,
+            justifyContent: "center",
+          }}
+        >
           <Select
             value={subject}
             placeholder="Chọn môn học"
@@ -91,22 +103,42 @@ const HomePage = () => {
           </Select>
         </div>
 
-        <div style={{ minHeight: 200 }}>
+        <div style={{ minHeight: 300 }}>
           {loading ? (
-            <div style={{ textAlign: "center", padding: 20 }}>
+            <div style={{ textAlign: "center", padding: 40 }}>
               <Spin size="large" />
             </div>
-) : (
+          ) : (
             <List
+              grid={{ gutter: 16, column: 4 }}
               dataSource={lessons}
               renderItem={(item) => (
-                <List.Item key={item.id}>{item.title}</List.Item>
+                <List.Item key={item.id}>
+                  <Card
+                    hoverable
+                    cover={
+                      <img
+                        alt={item.title}
+                        src={item.thumbnail || "https://via.placeholder.com/300x180?text=No+Image"}
+                        style={{ height: 180, objectFit: "cover", borderRadius: "8px 8px 0 0" }}
+                      />
+                    }
+                    style={{ borderRadius: 12 }}
+                  >
+                    <Card.Meta
+                      title={item.title}
+                      description={item.description || "Không có mô tả"}
+                    />
+                  </Card>
+                </List.Item>
               )}
             />
           )}
         </div>
 
-        <div style={{ marginTop: 16, display: "flex", justifyContent: "center" }}>
+        <div
+          style={{ marginTop: 20, display: "flex", justifyContent: "center" }}
+        >
           <Pagination
             current={currentPage}
             pageSize={pageSize}
