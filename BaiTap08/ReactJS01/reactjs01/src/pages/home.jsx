@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, List, Pagination, Spin, message, Select, Input } from "antd";
-import { getLessonsApi } from "../util/api";
+import { getLessonsApi, getFiltersApi } from "../util/api";
 import LessonCard from "../components/layout/LessonCard";
 
 const { Option } = Select;
@@ -15,17 +15,9 @@ const HomePage = () => {
 
   const [subject, setSubject] = useState();
   const [category, setCategory] = useState();
-  const [keyword, setKeyword] = useState(""); // từ khóa fuzzy search
-
-  // danh sách subject cố định
-  const subjects = ["physics", "chemistry", "biology"];
-
-  // category theo từng subject
-  const categories = {
-    physics: ["Điện học", "Điện từ", "Cơ học"],
-    chemistry: ["Cấu trúc nguyên tử", "Liên kết hoá học", "Hữu cơ", "Phản ứng"],
-    biology: ["Tế bào", "Sinh học phân tử", "Chuyển hoá"],
-  };
+  const [keyword, setKeyword] = useState("");
+  const [subjects, setSubjects] = useState([]);
+  const [categories, setCategories] = useState({});
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -43,6 +35,24 @@ const HomePage = () => {
     };
     fetchLessons();
   }, [currentPage, pageSize, subject, category, keyword]);
+  useEffect(() => {
+  const fetchFilters = async () => {
+    try {
+      const res = await getFiltersApi();
+      console.log("get-filter raw:", res);
+
+      // Hỗ trợ cả 2 kiểu: có interceptor (res là data) / không interceptor (res.data là data)
+      const payload = res?.data ?? res;
+
+      setSubjects(payload?.subjects || []);
+      setCategories(payload?.categories || {}); // { subject: [cats...] }
+    } catch (err) {
+      console.error("Lỗi gọi API get-filter:", err);
+      message.error("Không thể tải bộ lọc!");
+    }
+  };
+  fetchFilters();
+  }, []);
 
   return (
     <div
@@ -58,12 +68,12 @@ const HomePage = () => {
         title="Danh sách bài học"
         style={{ 
           textAlign: "center", 
-          width: "90%",
-          border: "1px solid #3a7d6b", // viền đậm hơn
+          width: "73%",
+          border: "1px solid #3a7d6b",
           borderRadius: "8px"
         }}
         headStyle={{ 
-          background: "#63c9a7", // nền của phần tiêu đề
+          background: "#63c9a7", 
           color: "#fff" 
         }}
       >
@@ -90,7 +100,7 @@ const HomePage = () => {
               } else {
                 setSubject(value);
                 setCategory(undefined);  // reset category khi đổi subject
-}
+              }
               setCurrentPage(1);
             }}
           >
@@ -143,6 +153,8 @@ const HomePage = () => {
                       item.thumbnail ||
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgh394OQoFRXqpvGzCs27NNoLCqMGhTjgQGw&s"
                     }
+                    price={item.price}
+                    viewCount={item.viewCount}
                   />
                 </List.Item>
               )}

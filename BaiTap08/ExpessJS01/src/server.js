@@ -4,6 +4,7 @@ const express = require('express'); //commonjs
 const configViewEngine = require('./config/viewEngine');
 const apiRoutes = require('./routes/api');
 const connection = require('./config/database');
+const { pingES } = require("./config/elasticSearch");
 const { getHomepage } = require('./controllers/homeController');
 const cors = require('cors');
 const app = express(); //cấu hình app là express
@@ -24,6 +25,8 @@ app.use('/v1/api', apiRoutes);
   try {
     //kết nối database using mongoose
     await connection();
+    //
+    await pingES();
     //lắng nghe port trong env
     app.listen(port, () => {
       console.log(`Backend Nodejs App listening on port ${port}`);

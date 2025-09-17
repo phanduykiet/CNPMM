@@ -23,6 +23,12 @@ const getLessonsApi = (page = 1, limit = 5, subject = "", category = "", search 
         params: { page, limit, subject, category, search }
     });
 };
+// 👉 thêm API lấy filters
+const getFiltersApi = () => {
+  const URL_API = "/v1/api/get-filter";
+  return axios.get(URL_API);
+};
+
 export {
-    createUserApi, loginApi, getUserApi, getLessonsApi
+    createUserApi, loginApi, getUserApi, getLessonsApi, getFiltersApi
 }
