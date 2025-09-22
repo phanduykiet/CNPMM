@@ -12,8 +12,11 @@ const {
   addCommentService,
   addBuyerService,
   getLessonByIdService,
+  getCommentsService,
+  getCommentCountService,
 } = require("../services/lessonService");
 const Lesson = require("../models/Lesson");
+const { Types } = require("mongoose");   
 
 // Lấy danh sách bài học với phân trang và lọc và tìm kiếm
 const getLessons = async (req, res) => {
@@ -164,6 +167,25 @@ const addComment = async (req, res) => {
   }
 };
 
+// ====== GET COMMENTS (list + pagination) ======
+const getComments = async (req, res) => {
+  try {
+    const { lessonId } = req.params;
+    const page  = Math.max(parseInt(req.query.page || "1", 10), 1);
+    const limit = Math.min(Math.max(parseInt(req.query.limit || "10", 10), 1), 100);
+    const sort  = (req.query.sort || "desc").toLowerCase(); // 'desc' | 'asc'
+
+    if (!Types.ObjectId.isValid(lessonId)) {
+      return res.status(400).json({ success: false, message: "Invalid lessonId" });
+    }
+
+    const result = await getCommentsService({ lessonId, page, limit, sort });
+    return res.json({ success: true, data: result });
+  } catch (e) {
+    return res.status(400).json({ success: false, message: e.message });
+  }
+};
+
 // ====== BUY ======
 const addBuyer = async (req, res) => {
   try {
@@ -201,4 +223,5 @@ module.exports = {
   addComment,
   addBuyer,
   getLessonById,
+  getComments,
 };

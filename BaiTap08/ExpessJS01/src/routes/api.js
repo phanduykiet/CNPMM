@@ -19,7 +19,8 @@ const {
   getSimilarLessons,
   getLessonCounts,
   addComment,
-  addBuyer
+  addBuyer,
+  getComments,
 } = require("../controllers/lessonController");
 
 const auth = require("../middleware/auth");
@@ -64,7 +65,8 @@ routerAPI.get("/lessons/:lessonId/similar", getSimilarLessons);
 routerAPI.get("/lessons/:lessonId/counts", getLessonCounts);
 
 // comments
-routerAPI.post("/lessons/:lessonId/comments", addComment);
+routerAPI.post("/lessons/:lessonId/add-comments", addComment);
+routerAPI.get("/lessons/:lessonId/get-comments", getComments); // xem tất cả comment (phân trang)
 
 // buy
 routerAPI.post("/lessons/:lessonId/buy", addBuyer);

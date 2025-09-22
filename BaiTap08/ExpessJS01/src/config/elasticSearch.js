@@ -11,9 +11,9 @@ const esClient = new Client({
 const pingES = async () => {
   try {
     await esClient.ping();
-    console.log("✅ Elasticsearch connected!");
+    console.log("Elasticsearch connected!");
   } catch (error) {
-    console.error("❌ Error connecting to Elasticsearch:", error);
+    console.error("Error connecting to Elasticsearch:", error);
   }
 };
 
