@@ -40,7 +40,7 @@ const UserPage = () => {
             <Table
                 bordered
                 dataSource={dataSource} columns={columns}
-                rowkey={"_id"}
+                rowKey={"_id"}
             />
         </div>
     )

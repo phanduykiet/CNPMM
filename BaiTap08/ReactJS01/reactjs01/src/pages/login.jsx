@@ -1,4 +1,4 @@
-import { React, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Button, Col, Divider, Form, Input, notification, Row } from 'antd';
 import { loginApi } from '../util/api';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,19 +12,24 @@ const LoginPage = () => {
         const res = await loginApi (email, password);
         if (res && res.EC === 0) {
             localStorage.setItem("access_token", res.access_token)
+            localStorage.setItem("id", res.user.id);
+            localStorage.setItem("name", res.user.name);
+            localStorage.setItem("email", res.user.email);
+
             notification.success({
                 message: "LOGIN USER",
                 description: "Success"
             });
-            const newAuth = {
+            console.log("res user:", res.user);
+            setAuth({
                 isAuthenticated: true,
                 user: {
-                    name: res?.user?.name ?? "",
-                    email: res?.user?.email ?? "",
+                    id: res.user.id ?? "",
+                    name: res.user.name ?? "",
+                    email: res.user.email ?? "",
                 }
-            };
-            console.log(">>> sẽ set auth = ", newAuth); // check trước khi set
-            setAuth(newAuth);
+            })
+            console.log("id la: ", res.user.id);
             navigate("/");
         } else {
             notification.error({ 

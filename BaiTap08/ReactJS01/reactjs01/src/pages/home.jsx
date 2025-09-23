@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, List, Pagination, Spin, message, Select, Input } from "antd";
 import { getLessonsApi, getFiltersApi } from "../util/api";
 import LessonCard from "../components/layout/LessonCard";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -18,6 +19,7 @@ const HomePage = () => {
   const [keyword, setKeyword] = useState("");
   const [subjects, setSubjects] = useState([]);
   const [categories, setCategories] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -144,21 +146,19 @@ const HomePage = () => {
             <List
               grid={{ gutter: 16, column: 4 }}
               dataSource={lessons}
-              locale={{ emptyText: "Không có bài học nào" }}
               renderItem={(item) => (
                 <List.Item key={item.id}>
-                  <LessonCard
-                    title={item.title}
-                    thumbnail={
-                      item.thumbnail ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgh394OQoFRXqpvGzCs27NNoLCqMGhTjgQGw&s"
-                    }
-                    price={item.price}
-                    viewCount={item.viewCount}
-                  />
+                  <div onClick={() => navigate(`/lessondetail/${item.id}`)} style={{ cursor: "pointer" }}>
+                    <LessonCard
+                      id={item.id}
+                      title={item.title}
+                      thumbnail={item.thumbnail}
+                      price={item.price}
+                      viewCount={item.viewCount}
+                    />
+                  </div>
                 </List.Item>
               )}
-              style={{ minHeight: 550 }} // cố định chiều cao danh sách
             />
           )}
         </div>
